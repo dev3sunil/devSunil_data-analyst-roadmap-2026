@@ -1,0 +1,1142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DataCraft Academy — Learn Data Analysis</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0b0d14;
+  --surface:#13151f;
+  --surface2:#1c1f2e;
+  --border:#252836;
+  --border2:#2f3348;
+  --accent:#00d4aa;
+  --accent2:#7c6bff;
+  --accent3:#ff6b6b;
+  --accent4:#ffd166;
+  --text:#e8eaf5;
+  --muted:#7b7f99;
+  --muted2:#5a5e78;
+  --code-bg:#0d1019;
+  --sidebar-w:280px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);display:flex;min-height:100vh;overflow-x:hidden}
+
+/* ── SIDEBAR ── */
+#sidebar{
+  width:var(--sidebar-w);min-width:var(--sidebar-w);height:100vh;
+  position:fixed;top:0;left:0;
+  background:var(--surface);
+  border-right:1px solid var(--border);
+  display:flex;flex-direction:column;
+  overflow:hidden;z-index:100;
+}
+.logo{
+  padding:24px 20px 20px;
+  border-bottom:1px solid var(--border);
+  flex-shrink:0;
+}
+.logo-name{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;letter-spacing:-0.5px}
+.logo-name span{color:var(--accent)}
+.logo-tag{font-size:11px;color:var(--muted);margin-top:3px;letter-spacing:0.05em}
+.progress-ring-wrap{padding:16px 20px;border-bottom:1px solid var(--border);flex-shrink:0}
+.prog-label{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:8px}
+.prog-track{height:4px;background:var(--surface2);border-radius:2px}
+.prog-bar{height:4px;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:2px;width:0%;transition:width .5s ease}
+.nav-scroll{flex:1;overflow-y:auto;padding:12px 0 20px}
+.nav-scroll::-webkit-scrollbar{width:4px}
+.nav-scroll::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+.nav-module{margin-bottom:4px}
+.nav-module-btn{
+  width:100%;text-align:left;background:none;border:none;
+  padding:9px 20px;cursor:pointer;
+  display:flex;align-items:center;gap:10px;
+  font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;
+  color:var(--muted);transition:all .15s;
+}
+.nav-module-btn:hover{color:var(--text);background:var(--surface2)}
+.nav-module-btn.open{color:var(--text)}
+.nav-module-btn .mod-icon{
+  width:26px;height:26px;border-radius:6px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;flex-shrink:0;
+}
+.nav-module-btn .chevron{margin-left:auto;font-size:10px;transition:transform .2s}
+.nav-module-btn.open .chevron{transform:rotate(90deg)}
+.nav-lessons{display:none;padding:4px 0 4px 56px}
+.nav-module-btn.open + .nav-lessons{display:block}
+.nav-lesson-btn{
+  width:100%;text-align:left;background:none;border:none;
+  padding:7px 12px 7px 0;cursor:pointer;
+  font-family:'DM Sans',sans-serif;font-size:12.5px;
+  color:var(--muted2);display:flex;align-items:center;gap:8px;
+  transition:color .15s;border-radius:6px;
+}
+.nav-lesson-btn:hover{color:var(--text)}
+.nav-lesson-btn.active{color:var(--accent);font-weight:500}
+.nav-lesson-btn .check{width:14px;height:14px;border-radius:50%;border:1.5px solid var(--border2);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:8px;transition:all .2s}
+.nav-lesson-btn.done .check{background:var(--accent);border-color:var(--accent);color:var(--bg)}
+
+/* ── MAIN ── */
+#main{margin-left:var(--sidebar-w);flex:1;min-height:100vh;display:flex;flex-direction:column}
+.topbar{
+  position:sticky;top:0;z-index:50;
+  background:rgba(11,13,20,.85);backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);
+  padding:14px 40px;display:flex;align-items:center;justify-content:space-between;
+}
+.breadcrumb{font-size:13px;color:var(--muted);display:flex;align-items:center;gap:8px}
+.breadcrumb span{color:var(--text)}
+.lesson-counter{font-size:12px;color:var(--muted);background:var(--surface2);padding:4px 12px;border-radius:20px}
+.content{max-width:860px;margin:0 auto;padding:48px 40px 80px;width:100%}
+
+/* ── HOME HERO ── */
+.hero{text-align:center;padding:60px 0 40px}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(0,212,170,.1);border:1px solid rgba(0,212,170,.25);color:var(--accent);font-size:12px;font-weight:500;padding:5px 14px;border-radius:20px;margin-bottom:24px;letter-spacing:0.03em}
+.hero h1{font-family:'Syne',sans-serif;font-size:52px;font-weight:800;line-height:1.1;letter-spacing:-1.5px;margin-bottom:16px}
+.hero h1 .grad{background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero p{font-size:17px;color:var(--muted);max-width:540px;margin:0 auto 36px;line-height:1.7}
+.hero-stats{display:flex;justify-content:center;gap:32px;flex-wrap:wrap}
+.hero-stat{text-align:center}
+.hero-stat-num{font-family:'Syne',sans-serif;font-size:28px;font-weight:700;color:var(--accent)}
+.hero-stat-label{font-size:12px;color:var(--muted);margin-top:2px}
+.module-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;margin-top:40px}
+.module-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:14px;padding:20px;cursor:pointer;
+  transition:all .2s;position:relative;overflow:hidden;
+}
+.module-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;opacity:0;transition:opacity .2s}
+.module-card:hover{border-color:var(--border2);transform:translateY(-2px)}
+.module-card:hover::before{opacity:1}
+.mc-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:14px}
+.mc-title{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;margin-bottom:6px}
+.mc-desc{font-size:13px;color:var(--muted);line-height:1.6}
+.mc-meta{margin-top:12px;font-size:11px;color:var(--muted2);display:flex;gap:12px}
+
+/* ── LESSON ── */
+.lesson-view{display:none}
+.lesson-view.active{display:block}
+.lesson-hero{margin-bottom:36px}
+.lesson-module-tag{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px;display:inline-block}
+.lesson-title{font-family:'Syne',sans-serif;font-size:34px;font-weight:800;letter-spacing:-1px;line-height:1.2;margin-bottom:12px}
+.lesson-desc{font-size:16px;color:var(--muted);line-height:1.7}
+.lesson-tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.tag{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:500}
+
+/* Content blocks */
+.section-label{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:32px 0 14px;display:flex;align-items:center;gap:10px}
+.section-label::after{content:'';flex:1;height:1px;background:var(--border)}
+.concept-box{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px 24px;margin-bottom:20px;border-left:3px solid var(--accent)}
+.concept-box p{font-size:15px;line-height:1.8;color:#c8cbe0}
+.concept-box strong{color:var(--text);font-weight:600}
+.concept-box code{font-family:'JetBrains Mono',monospace;font-size:12.5px;background:rgba(0,212,170,.1);color:var(--accent);padding:2px 6px;border-radius:4px}
+.code-wrap{margin-bottom:20px;border-radius:12px;overflow:hidden;border:1px solid var(--border)}
+.code-header{background:var(--surface2);padding:10px 16px;display:flex;align-items:center;justify-content:space-between;font-size:12px;color:var(--muted);border-bottom:1px solid var(--border)}
+.code-dots{display:flex;gap:6px}
+.dot{width:10px;height:10px;border-radius:50%}
+.code-block{background:var(--code-bg);padding:20px;font-family:'JetBrains Mono',monospace;font-size:13px;line-height:1.8;overflow-x:auto;white-space:pre}
+/* syntax */
+.kw{color:#ff79c6}.fn{color:#8be9fd}.str{color:#f1fa8c}.cmt{color:#6272a4;font-style:italic}.tbl{color:#50fa7b}.num{color:#bd93f9}.op{color:#ff6bcb}.py{color:#ffb86c}.var{color:#f8f8f2}
+.output-wrap{margin-bottom:24px}
+.output-table{width:100%;border-collapse:collapse;font-size:13px;font-family:'DM Sans',sans-serif}
+.output-table th{background:var(--surface2);color:var(--muted);font-weight:500;font-size:11px;text-transform:uppercase;letter-spacing:.06em;padding:9px 14px;text-align:left;border-bottom:1px solid var(--border)}
+.output-table td{padding:9px 14px;border-bottom:1px solid var(--border);color:var(--text)}
+.output-table tr:hover td{background:var(--surface2)}
+.output-table .num-cell{color:var(--accent2);font-family:'JetBrains Mono',monospace;font-size:12px}
+.output-table .highlight-cell{color:var(--accent);font-weight:500}
+.tip-box{background:rgba(255,209,102,.07);border:1px solid rgba(255,209,102,.2);border-radius:10px;padding:14px 18px;margin-bottom:20px;display:flex;gap:12px;font-size:14px;line-height:1.7;color:#c8cbe0}
+.tip-box strong{color:var(--accent4)}
+.info-box{background:rgba(124,107,255,.07);border:1px solid rgba(124,107,255,.2);border-radius:10px;padding:14px 18px;margin-bottom:20px;font-size:14px;line-height:1.7;color:#c8cbe0}
+.info-box strong{color:var(--accent2)}
+.comparison-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px}
+.cmp-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px}
+.cmp-title{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;margin-bottom:10px}
+.cmp-list{list-style:none}
+.cmp-list li{font-size:13px;color:var(--muted);padding:4px 0;display:flex;align-items:flex-start;gap:8px}
+.cmp-list li::before{content:'•';flex-shrink:0;margin-top:1px}
+
+/* Quiz */
+.quiz-box{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:24px;margin-top:24px}
+.quiz-title{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;margin-bottom:6px}
+.quiz-q{font-size:15px;line-height:1.7;color:var(--muted);margin-bottom:18px}
+.quiz-opts{display:flex;flex-direction:column;gap:10px}
+.quiz-opt{
+  padding:12px 16px;border:1px solid var(--border);
+  border-radius:10px;background:var(--surface2);
+  text-align:left;font-size:14px;cursor:pointer;
+  color:var(--text);font-family:'DM Sans',sans-serif;
+  transition:all .15s;display:flex;align-items:center;gap:12px;
+}
+.quiz-opt:hover:not(:disabled){border-color:var(--accent);color:var(--accent)}
+.quiz-opt .opt-letter{width:24px;height:24px;border-radius:6px;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;flex-shrink:0;transition:all .15s}
+.quiz-opt:hover:not(:disabled) .opt-letter{background:rgba(0,212,170,.15);color:var(--accent)}
+.quiz-opt.correct{border-color:#00d4aa;background:rgba(0,212,170,.08);color:#00d4aa}
+.quiz-opt.correct .opt-letter{background:rgba(0,212,170,.2);color:#00d4aa}
+.quiz-opt.wrong{border-color:#ff6b6b;background:rgba(255,107,107,.08);color:#ff6b6b}
+.quiz-opt.wrong .opt-letter{background:rgba(255,107,107,.2);color:#ff6b6b}
+.quiz-feedback{margin-top:14px;padding:12px 16px;border-radius:8px;font-size:13.5px;line-height:1.6;display:none}
+.quiz-feedback.show{display:block}
+.quiz-feedback.ok{background:rgba(0,212,170,.08);color:#00d4aa;border:1px solid rgba(0,212,170,.2)}
+.quiz-feedback.bad{background:rgba(255,107,107,.08);color:#ff8080;border:1px solid rgba(255,107,107,.2)}
+
+/* Nav buttons */
+.lesson-nav-btns{display:flex;align-items:center;justify-content:space-between;margin-top:40px;padding-top:28px;border-top:1px solid var(--border)}
+.nav-btn{padding:10px 22px;border-radius:10px;font-size:14px;font-weight:500;cursor:pointer;transition:all .15s;font-family:'DM Sans',sans-serif}
+.nav-btn.prev{background:none;border:1px solid var(--border);color:var(--muted)}
+.nav-btn.prev:hover{border-color:var(--border2);color:var(--text)}
+.nav-btn.next{background:var(--accent);border:1px solid var(--accent);color:var(--bg);font-weight:600}
+.nav-btn.next:hover{background:#00bfa0}
+.nav-btn:disabled{opacity:.3;cursor:not-allowed}
+.complete-btn{padding:10px 22px;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;background:rgba(0,212,170,.1);border:1px solid rgba(0,212,170,.3);color:var(--accent);font-family:'DM Sans',sans-serif;transition:all .15s}
+.complete-btn:hover{background:rgba(0,212,170,.2)}
+.complete-btn.done{background:rgba(0,212,170,.15);opacity:.6;cursor:default}
+
+/* formula cards */
+.formula-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-bottom:20px}
+.formula-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 16px}
+.formula-name{font-size:11px;color:var(--muted);margin-bottom:6px;font-weight:500;text-transform:uppercase;letter-spacing:.06em}
+.formula-code{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--accent2)}
+.formula-desc{font-size:12px;color:var(--muted);margin-top:6px;line-height:1.5}
+
+/* steps */
+.steps{counter-reset:step;display:flex;flex-direction:column;gap:16px;margin-bottom:20px}
+.step{display:flex;gap:16px;align-items:flex-start}
+.step-num{counter-increment:step;width:30px;height:30px;border-radius:50%;background:rgba(0,212,170,.15);border:1px solid rgba(0,212,170,.3);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;color:var(--accent);flex-shrink:0;margin-top:2px}
+.step-content{flex:1;padding-top:4px}
+.step-title{font-size:14px;font-weight:600;margin-bottom:4px}
+.step-desc{font-size:13.5px;color:var(--muted);line-height:1.7}
+
+/* table of topics */
+.topics-table{width:100%;border-collapse:collapse;margin-bottom:20px;font-size:13.5px}
+.topics-table th{background:var(--surface2);padding:10px 14px;text-align:left;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);border-bottom:1px solid var(--border)}
+.topics-table td{padding:10px 14px;border-bottom:1px solid var(--border)}
+.topics-table tr:hover td{background:var(--surface)}
+.badge{display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:500}
+</style>
+</head>
+<body>
+
+<!-- ───────────── SIDEBAR ───────────── -->
+<nav id="sidebar">
+  <div class="logo">
+    <div class="logo-name">Data<span>Craft</span> Academy</div>
+    <div class="logo-tag">End-to-End Data Analysis</div>
+  </div>
+  <div class="progress-ring-wrap">
+    <div class="prog-label"><span>Your Progress</span><span id="prog-pct">0%</span></div>
+    <div class="prog-track"><div class="prog-bar" id="prog-bar"></div></div>
+  </div>
+  <div class="nav-scroll" id="nav-tree"></div>
+</nav>
+
+<!-- ───────────── MAIN ───────────── -->
+<main id="main">
+  <div class="topbar">
+    <div class="breadcrumb" id="breadcrumb">
+      <span>DataCraft Academy</span>
+    </div>
+    <div class="lesson-counter" id="lesson-counter">7 Modules • 42 Lessons</div>
+  </div>
+  <div class="content" id="content-area">
+    <!-- HOME injected by JS -->
+  </div>
+</main>
+
+<script>
+// ════════════════════════════════════════════════════════
+// CURRICULUM DATA
+// ════════════════════════════════════════════════════════
+const curriculum = [
+{
+  id:'sql', icon:'🗄️', title:'SQL for Data Analysis',
+  color:'#00d4aa', tagClass:'tag-sql',
+  desc:'Master SQL from basics to advanced window functions and interview patterns.',
+  lessons:[
+    {
+      id:'sql-select',title:'SELECT, FROM & WHERE',
+      tag:'SQL Fundamentals',tagColor:'#00d4aa',
+      desc:'The foundation of every SQL query — retrieving and filtering rows.',
+      sections:[
+        {type:'concept',content:`<strong>SELECT</strong> specifies which columns to retrieve. <strong>FROM</strong> specifies the table. <strong>WHERE</strong> filters rows before returning them. Together, these three clauses handle the majority of real-world data queries.<br><br>The execution order matters: SQL actually runs <code>FROM → WHERE → SELECT</code>, not left to right. Understanding this prevents common mistakes with aliases.`},
+        {type:'code',lang:'SQL',label:'Basic SELECT with filtering',code:`<span class="kw">SELECT</span>
+  customer_name,
+  city,
+  total_spend
+<span class="kw">FROM</span> <span class="tbl">customers</span>
+<span class="kw">WHERE</span> total_spend > <span class="num">10000</span>
+  <span class="kw">AND</span> city <span class="kw">IN</span> (<span class="str">'Mumbai'</span>, <span class="str">'Bangalore'</span>, <span class="str">'Delhi'</span>)
+<span class="kw">ORDER BY</span> total_spend <span class="kw">DESC</span>
+<span class="kw">LIMIT</span> <span class="num">10</span>;`},
+        {type:'table',cols:['customer_name','city','total_spend'],rows:[['Priya Sharma','Mumbai','87,500'],['Arjun Mehta','Bangalore','74,200'],['Kavya Reddy','Bangalore','63,800'],['Rohit Patel','Mumbai','55,100']]},
+        {type:'tip',title:'Pro Tip',content:`<strong>WHERE operators you must know:</strong><br>
+• <code>=  !=  &lt;  &gt;  &lt;=  &gt;=</code> — comparison operators<br>
+• <code>LIKE 'A%'</code> — starts with A &nbsp;&nbsp; <code>LIKE '%xyz'</code> — ends with xyz<br>
+• <code>IN (a, b, c)</code> — matches any value in list<br>
+• <code>BETWEEN 100 AND 200</code> — inclusive range<br>
+• <code>IS NULL / IS NOT NULL</code> — check for missing values`},
+        {type:'quiz',q:'What does SELECT * FROM orders WHERE status IS NULL return?',opts:['All rows from orders','Orders where status has any value','Orders where status has no value (missing)','An error'],ans:2,exp:'IS NULL matches rows where the column has no value stored. IS NOT NULL is the opposite.'}
+      ]
+    },
+    {
+      id:'sql-agg',title:'GROUP BY & Aggregates',
+      tag:'SQL Fundamentals',tagColor:'#00d4aa',
+      desc:'Summarize data across groups with COUNT, SUM, AVG, MIN, MAX.',
+      sections:[
+        {type:'concept',content:`<strong>Aggregate functions</strong> collapse multiple rows into a single summary value. <strong>GROUP BY</strong> splits rows into groups first, then applies the aggregate to each group. <strong>HAVING</strong> filters groups (like WHERE, but runs after aggregation).<br><br>The rule: any column in SELECT that isn't aggregated <em>must</em> appear in GROUP BY.`},
+        {type:'code',lang:'SQL',label:'Sales summary by region and product',code:`<span class="kw">SELECT</span>
+  region,
+  category,
+  <span class="fn">COUNT</span>(*) <span class="kw">AS</span> total_orders,
+  <span class="fn">SUM</span>(revenue) <span class="kw">AS</span> total_revenue,
+  <span class="fn">ROUND</span>(<span class="fn">AVG</span>(revenue), <span class="num">2</span>) <span class="kw">AS</span> avg_order_value,
+  <span class="fn">MAX</span>(revenue) <span class="kw">AS</span> best_order
+<span class="kw">FROM</span> <span class="tbl">orders</span>
+<span class="kw">WHERE</span> order_date >= <span class="str">'2024-01-01'</span>
+<span class="kw">GROUP BY</span> region, category
+<span class="kw">HAVING</span> <span class="fn">SUM</span>(revenue) > <span class="num">100000</span>
+<span class="kw">ORDER BY</span> total_revenue <span class="kw">DESC</span>;`},
+        {type:'table',cols:['region','category','total_orders','total_revenue','avg_order_value'],rows:[['South','Electronics','1,842','₹4.2M','₹2,280'],['West','Clothing','3,210','₹1.8M','₹561'],['North','Electronics','1,204','₹1.5M','₹1,246']]},
+        {type:'tip',title:'WHERE vs HAVING',content:`<strong>WHERE</strong> filters rows <em>before</em> grouping — it cannot use aggregate functions.<br><strong>HAVING</strong> filters groups <em>after</em> aggregation — it can use aggregate functions.<br><br>Example: <code>WHERE revenue > 1000</code> runs first. <code>HAVING SUM(revenue) > 100000</code> runs after GROUP BY.`},
+        {type:'quiz',q:'You want to show only departments where AVG(salary) > 80000. Which clause?',opts:['WHERE AVG(salary) > 80000','HAVING AVG(salary) > 80000','FILTER AVG(salary) > 80000','ORDER BY AVG(salary) > 80000'],ans:1,exp:'HAVING filters groups after aggregation. WHERE cannot reference aggregate functions like AVG().'}
+      ]
+    },
+    {
+      id:'sql-joins',title:'JOINs — Combining Tables',
+      tag:'SQL Core',tagColor:'#7c6bff',
+      desc:'Combine data from multiple tables using INNER, LEFT, RIGHT, and FULL JOINs.',
+      sections:[
+        {type:'concept',content:`<strong>JOINs</strong> combine rows from two or more tables based on a related column. The most important types:<br><br>
+• <strong>INNER JOIN</strong> — only rows that match in both tables<br>
+• <strong>LEFT JOIN</strong> — all rows from the left, matched from right (NULLs if no match)<br>
+• <strong>RIGHT JOIN</strong> — all rows from the right, matched from left<br>
+• <strong>FULL OUTER JOIN</strong> — all rows from both, NULLs where no match`},
+        {type:'code',lang:'SQL',label:'Multi-table JOIN example',code:`<span class="cmt">-- INNER JOIN: only customers who placed orders</span>
+<span class="kw">SELECT</span>
+  c.customer_name,
+  c.city,
+  o.order_date,
+  o.total,
+  p.product_name
+<span class="kw">FROM</span> <span class="tbl">customers</span> c
+<span class="kw">INNER JOIN</span> <span class="tbl">orders</span> o <span class="kw">ON</span> c.customer_id = o.customer_id
+<span class="kw">INNER JOIN</span> <span class="tbl">products</span> p <span class="kw">ON</span> o.product_id = p.product_id
+<span class="kw">WHERE</span> o.order_date >= <span class="str">'2024-01-01'</span>;
+
+<span class="cmt">-- LEFT JOIN: ALL customers, even those with no orders</span>
+<span class="kw">SELECT</span>
+  c.customer_name,
+  <span class="fn">COUNT</span>(o.order_id) <span class="kw">AS</span> total_orders
+<span class="kw">FROM</span> <span class="tbl">customers</span> c
+<span class="kw">LEFT JOIN</span> <span class="tbl">orders</span> o <span class="kw">ON</span> c.customer_id = o.customer_id
+<span class="kw">GROUP BY</span> c.customer_name
+<span class="kw">HAVING</span> <span class="fn">COUNT</span>(o.order_id) = <span class="num">0</span>; <span class="cmt">-- Customers with ZERO orders</span>`},
+        {type:'tip',title:'Classic Pattern',content:`<strong>LEFT JOIN + WHERE right_table.id IS NULL</strong> = find records in A with NO match in B. The go-to pattern for gap analysis (customers who never ordered, products never sold, etc.).`},
+        {type:'quiz',q:'Customers table has 500 rows. Orders table has 1200 rows. INNER JOIN returns 400 rows. What does that mean?',opts:['400 customers placed orders','500 customers are matched','300 customers have no orders','1200 orders were placed'],ans:2,exp:'INNER JOIN returns only matching rows. If 500 customers exist but only 400 matched to orders, 100 customers (500-400) have no orders.'}
+      ]
+    },
+    {
+      id:'sql-window',title:'Window Functions',
+      tag:'SQL Advanced',tagColor:'#ff6b6b',
+      desc:'RANK, ROW_NUMBER, LAG, LEAD — the most powerful SQL tools for analysts.',
+      sections:[
+        {type:'concept',content:`<strong>Window functions</strong> run calculations across a set of rows related to the current row — without collapsing the result like GROUP BY. They use the <strong>OVER()</strong> clause with optional <strong>PARTITION BY</strong> and <strong>ORDER BY</strong>.<br><br>This is the #1 topic in DA SQL interviews. Master this and you stand out.`},
+        {type:'code',lang:'SQL',label:'Ranking + LAG for period comparison',code:`<span class="cmt">-- Rank employees by salary within department</span>
+<span class="kw">SELECT</span>
+  emp_name, department, salary,
+  <span class="fn">RANK</span>() <span class="kw">OVER</span>(<span class="kw">PARTITION BY</span> department <span class="kw">ORDER BY</span> salary <span class="kw">DESC</span>) <span class="kw">AS</span> dept_rank,
+  <span class="fn">DENSE_RANK</span>() <span class="kw">OVER</span>(<span class="kw">PARTITION BY</span> department <span class="kw">ORDER BY</span> salary <span class="kw">DESC</span>) <span class="kw">AS</span> dense_rank,
+  salary - <span class="fn">AVG</span>(salary) <span class="kw">OVER</span>(<span class="kw">PARTITION BY</span> department) <span class="kw">AS</span> vs_dept_avg
+<span class="kw">FROM</span> <span class="tbl">employees</span>;
+
+<span class="cmt">-- Month-over-month revenue change</span>
+<span class="kw">SELECT</span>
+  month, revenue,
+  <span class="fn">LAG</span>(revenue) <span class="kw">OVER</span>(<span class="kw">ORDER BY</span> month) <span class="kw">AS</span> prev_month,
+  revenue - <span class="fn">LAG</span>(revenue) <span class="kw">OVER</span>(<span class="kw">ORDER BY</span> month) <span class="kw">AS</span> change,
+  <span class="fn">ROUND</span>(100.0 * (revenue - <span class="fn">LAG</span>(revenue) <span class="kw">OVER</span>(<span class="kw">ORDER BY</span> month))
+    / <span class="fn">LAG</span>(revenue) <span class="kw">OVER</span>(<span class="kw">ORDER BY</span> month), <span class="num">1</span>) <span class="kw">AS</span> pct_change
+<span class="kw">FROM</span> <span class="tbl">monthly_revenue</span>;`},
+        {type:'table',cols:['month','revenue','prev_month','change','pct_change'],rows:[['Jan 2024','₹1,20,000','—','—','—'],['Feb 2024','₹1,35,000','₹1,20,000','+₹15,000','+12.5%'],['Mar 2024','₹1,28,000','₹1,35,000','-₹7,000','-5.2%'],['Apr 2024','₹1,52,000','₹1,28,000','+₹24,000','+18.8%']]},
+        {type:'tip',title:'RANK vs DENSE_RANK vs ROW_NUMBER',content:`• <strong>RANK()</strong> — ties get same rank, skips next (1,2,2,4)<br>• <strong>DENSE_RANK()</strong> — ties same rank, no skip (1,2,2,3)<br>• <strong>ROW_NUMBER()</strong> — always unique, no ties (1,2,3,4)<br><br>For "Top N per group" in interviews, use ROW_NUMBER with CTE + WHERE rn &lt;= N.`},
+        {type:'quiz',q:'RANK() values in a dataset: 1,1,?,4. What is the missing value?',opts:['2','3','1','4'],ans:1,exp:'RANK skips numbers for ties. Two rows tied at rank 1, so rank 2 is skipped. The next rank is 3.'}
+      ]
+    },
+    {
+      id:'sql-cte',title:'CTEs & Subqueries',
+      tag:'SQL Advanced',tagColor:'#ff6b6b',
+      desc:'Write readable, modular queries with Common Table Expressions.',
+      sections:[
+        {type:'concept',content:`A <strong>CTE (Common Table Expression)</strong> uses <code>WITH name AS (...)</code> to give a sub-query a name, making complex queries readable and maintainable. You can chain multiple CTEs and reference earlier ones.<br><br>Think of CTEs as temporary named steps — like writing a recipe: define each ingredient before combining them.`},
+        {type:'code',lang:'SQL',label:'Multi-step CTE — Top customers above avg spend',code:`<span class="kw">WITH</span>
+<span class="cmt">-- Step 1: customer total spend</span>
+customer_spend <span class="kw">AS</span> (
+  <span class="kw">SELECT</span> customer_id, <span class="fn">SUM</span>(amount) <span class="kw">AS</span> total_spend
+  <span class="kw">FROM</span> <span class="tbl">orders</span>
+  <span class="kw">GROUP BY</span> customer_id
+),
+<span class="cmt">-- Step 2: compute overall average</span>
+avg_spend <span class="kw">AS</span> (
+  <span class="kw">SELECT</span> <span class="fn">AVG</span>(total_spend) <span class="kw">AS</span> overall_avg
+  <span class="kw">FROM</span> customer_spend
+),
+<span class="cmt">-- Step 3: customers above average</span>
+top_customers <span class="kw">AS</span> (
+  <span class="kw">SELECT</span> cs.customer_id, cs.total_spend, a.overall_avg,
+    cs.total_spend - a.overall_avg <span class="kw">AS</span> above_avg
+  <span class="kw">FROM</span> customer_spend cs, avg_spend a
+  <span class="kw">WHERE</span> cs.total_spend > a.overall_avg
+)
+<span class="kw">SELECT</span> c.name, t.total_spend, <span class="fn">ROUND</span>(t.above_avg) <span class="kw">AS</span> above_avg
+<span class="kw">FROM</span> top_customers t
+<span class="kw">JOIN</span> <span class="tbl">customers</span> c <span class="kw">ON</span> t.customer_id = c.customer_id
+<span class="kw">ORDER BY</span> t.total_spend <span class="kw">DESC</span>;`},
+        {type:'tip',title:'When to use CTEs vs Subqueries',content:`<strong>Use CTEs when:</strong> the logic is complex and needs a name for clarity, or you need to reference the same subquery more than once.<br><strong>Use subqueries when:</strong> the logic is simple (one line) and inline is cleaner.<br><br>CTEs = better readability. Subqueries = slightly shorter for simple cases.`},
+        {type:'quiz',q:'Can a CTE reference another CTE defined before it in the same WITH clause?',opts:['No, CTEs are independent','Yes, each CTE can reference prior ones','Only if they share a column','Only in PostgreSQL'],ans:1,exp:'CTEs are processed in order. Each CTE can reference any CTE defined above it in the same WITH block.'}
+      ]
+    }
+  ]
+},
+{
+  id:'python', icon:'🐍', title:'Python for Data Analysis',
+  color:'#7c6bff', tagClass:'tag-python',
+  desc:'Pandas, NumPy, and Python fundamentals for real-world data wrangling.',
+  lessons:[
+    {
+      id:'py-pandas-basics',title:'Pandas — Loading & Exploring Data',
+      tag:'Python · Pandas',tagColor:'#7c6bff',
+      desc:'Read datasets, inspect structure, and understand what you\'re working with.',
+      sections:[
+        {type:'concept',content:`<strong>Pandas</strong> is the core Python library for data analysis. A <strong>DataFrame</strong> is a 2D table (like a spreadsheet). A <strong>Series</strong> is a single column. Every DA role requires strong Pandas skills.<br><br>The first step with any dataset: load it, inspect its shape, check data types, and look for missing values.`},
+        {type:'code',lang:'Python',label:'Loading and exploring a dataset',code:`<span class="kw">import</span> pandas <span class="kw">as</span> pd
+<span class="kw">import</span> numpy <span class="kw">as</span> np
+
+<span class="cmt"># Load data</span>
+df = pd.<span class="fn">read_csv</span>(<span class="str">'sales_data.csv'</span>)
+
+<span class="cmt"># Basic inspection</span>
+<span class="fn">print</span>(df.<span class="fn">shape</span>)          <span class="cmt"># (rows, columns)</span>
+<span class="fn">print</span>(df.<span class="fn">dtypes</span>)         <span class="cmt"># column data types</span>
+<span class="fn">print</span>(df.<span class="fn">head</span>(<span class="num">5</span>))         <span class="cmt"># first 5 rows</span>
+<span class="fn">print</span>(df.<span class="fn">info</span>())          <span class="cmt"># shape + types + nulls</span>
+<span class="fn">print</span>(df.<span class="fn">describe</span>())     <span class="cmt"># stats for numeric cols</span>
+<span class="fn">print</span>(df.<span class="fn">isnull</span>().<span class="fn">sum</span>()) <span class="cmt"># null count per column</span>
+
+<span class="cmt"># Value counts for a categorical column</span>
+<span class="fn">print</span>(df[<span class="str">'region'</span>].<span class="fn">value_counts</span>())
+
+<span class="cmt"># Select columns and filter rows</span>
+high_value = df[df[<span class="str">'revenue'</span>] > <span class="num">50000</span>][
+  [<span class="str">'customer'</span>, <span class="str">'region'</span>, <span class="str">'revenue'</span>]
+].<span class="fn">sort_values</span>(<span class="str">'revenue'</span>, ascending=<span class="kw">False</span>)`},
+        {type:'tip',title:'Must-know Pandas methods',content:`<code>df.head(n)</code> &nbsp;·&nbsp; <code>df.tail(n)</code> &nbsp;·&nbsp; <code>df.shape</code> &nbsp;·&nbsp; <code>df.columns</code><br>
+<code>df.dtypes</code> &nbsp;·&nbsp; <code>df.info()</code> &nbsp;·&nbsp; <code>df.describe()</code><br>
+<code>df.isnull().sum()</code> &nbsp;·&nbsp; <code>df.nunique()</code> &nbsp;·&nbsp; <code>df.value_counts()</code><br>
+<code>df[col].unique()</code> &nbsp;·&nbsp; <code>df.sort_values(col)</code> &nbsp;·&nbsp; <code>df.reset_index()</code>`},
+        {type:'quiz',q:'What does df.isnull().sum() return?',opts:['True/False for each cell','Count of nulls per column','Total null count in the whole DataFrame','Row indices with nulls'],ans:1,exp:'isnull() returns True/False per cell. .sum() sums each column (True=1, False=0), giving null count per column.'}
+      ]
+    },
+    {
+      id:'py-wrangling',title:'Data Wrangling — groupby, merge, pivot',
+      tag:'Python · Pandas',tagColor:'#7c6bff',
+      desc:'Aggregate, join, reshape, and transform DataFrames.',
+      sections:[
+        {type:'concept',content:`<strong>groupby</strong> is Pandas' version of SQL GROUP BY. <strong>merge</strong> is the equivalent of JOIN. <strong>pivot_table</strong> reshapes data like a spreadsheet pivot. These three operations cover 80% of real data transformation work.`},
+        {type:'code',lang:'Python',label:'groupby, merge, and pivot_table',code:`<span class="kw">import</span> pandas <span class="kw">as</span> pd
+
+<span class="cmt"># groupby — sales by region and category</span>
+summary = df.<span class="fn">groupby</span>([<span class="str">'region'</span>, <span class="str">'category'</span>]).<span class="fn">agg</span>(
+  total_revenue=(<span class="str">'revenue'</span>, <span class="str">'sum'</span>),
+  order_count=(<span class="str">'order_id'</span>, <span class="str">'count'</span>),
+  avg_order=(<span class="str">'revenue'</span>, <span class="str">'mean'</span>)
+).<span class="fn">reset_index</span>()
+
+<span class="cmt"># merge — join orders with customers</span>
+merged = orders.<span class="fn">merge</span>(customers, on=<span class="str">'customer_id'</span>, how=<span class="str">'left'</span>)
+
+<span class="cmt"># pivot_table — revenue by region (rows) vs month (cols)</span>
+pivot = df.<span class="fn">pivot_table</span>(
+  values=<span class="str">'revenue'</span>,
+  index=<span class="str">'region'</span>,
+  columns=<span class="str">'month'</span>,
+  aggfunc=<span class="str">'sum'</span>,
+  fill_value=<span class="num">0</span>
+)
+
+<span class="cmt"># apply — custom function per row</span>
+df[<span class="str">'tier'</span>] = df[<span class="str">'revenue'</span>].<span class="fn">apply</span>(
+  <span class="kw">lambda</span> x: <span class="str">'High'</span> <span class="kw">if</span> x > <span class="num">50000</span> <span class="kw">else</span> (<span class="str">'Mid'</span> <span class="kw">if</span> x > <span class="num">20000</span> <span class="kw">else</span> <span class="str">'Low'</span>)
+)`},
+        {type:'tip',title:'merge() how parameter',content:`<code>how='inner'</code> — only matching rows (default)<br>
+<code>how='left'</code> — all rows from left DataFrame<br>
+<code>how='right'</code> — all rows from right DataFrame<br>
+<code>how='outer'</code> — all rows from both<br><br>
+Same logic as SQL JOINs!`},
+        {type:'quiz',q:'df.groupby("region")["revenue"].sum() — what does this return?',opts:['Revenue for each order grouped by region','Sum of revenue for each unique region','Revenue per customer per region','A list of all revenues'],ans:1,exp:'groupby("region") splits by unique region values, then .sum() adds up all revenue values within each region group.'}
+      ]
+    },
+    {
+      id:'py-cleaning',title:'Data Cleaning in Python',
+      tag:'Python · Data Quality',tagColor:'#ff6b6b',
+      desc:'Handle missing values, outliers, duplicates, and type conversions.',
+      sections:[
+        {type:'concept',content:`Real-world data is messy. Data cleaning typically takes 60-80% of a data analyst's time. The main issues:<br><br>
+• <strong>Missing values</strong> — NaN, None, empty strings<br>
+• <strong>Outliers</strong> — extreme values that distort analysis<br>
+• <strong>Duplicates</strong> — repeated rows<br>
+• <strong>Wrong types</strong> — numbers stored as strings<br>
+• <strong>Inconsistent categories</strong> — "Mumbai", "mumbai", "MUMBAI"`},
+        {type:'code',lang:'Python',label:'Comprehensive data cleaning pipeline',code:`<span class="kw">import</span> pandas <span class="kw">as</span> pd
+<span class="kw">import</span> numpy <span class="kw">as</span> np
+
+<span class="cmt"># 1. Handle missing values</span>
+df[<span class="str">'age'</span>].<span class="fn">fillna</span>(df[<span class="str">'age'</span>].<span class="fn">median</span>(), inplace=<span class="kw">True</span>)   <span class="cmt"># fill with median</span>
+df.<span class="fn">dropna</span>(subset=[<span class="str">'customer_id'</span>, <span class="str">'order_date'</span>], inplace=<span class="kw">True</span>)
+
+<span class="cmt"># 2. Remove duplicates</span>
+df.<span class="fn">drop_duplicates</span>(subset=[<span class="str">'order_id'</span>], keep=<span class="str">'first'</span>, inplace=<span class="kw">True</span>)
+
+<span class="cmt"># 3. Fix data types</span>
+df[<span class="str">'order_date'</span>] = pd.<span class="fn">to_datetime</span>(df[<span class="str">'order_date'</span>])
+df[<span class="str">'revenue'</span>] = pd.<span class="fn">to_numeric</span>(df[<span class="str">'revenue'</span>], errors=<span class="str">'coerce'</span>)
+
+<span class="cmt"># 4. Standardize text categories</span>
+df[<span class="str">'city'</span>] = df[<span class="str">'city'</span>].<span class="fn">str</span>.<span class="fn">strip</span>().<span class="fn">str</span>.<span class="fn">title</span>()
+
+<span class="cmt"># 5. Remove outliers using IQR method</span>
+Q1 = df[<span class="str">'revenue'</span>].<span class="fn">quantile</span>(<span class="num">0.25</span>)
+Q3 = df[<span class="str">'revenue'</span>].<span class="fn">quantile</span>(<span class="num">0.75</span>)
+IQR = Q3 - Q1
+df_clean = df[(df[<span class="str">'revenue'</span>] >= Q1 - <span class="num">1.5</span>*IQR) & 
+              (df[<span class="str">'revenue'</span>] <= Q3 + <span class="num">1.5</span>*IQR)]`},
+        {type:'tip',title:'IQR Outlier Rule',content:`<strong>IQR (Interquartile Range)</strong> = Q3 − Q1<br>Outlier threshold: anything below <code>Q1 − 1.5×IQR</code> or above <code>Q3 + 1.5×IQR</code> is considered an outlier.<br><br>This is the standard method used in box plots and in most DA interviews.`},
+        {type:'quiz',q:'df.dropna(subset=["email"]) removes what?',opts:['Rows where email is duplicated','Rows where email is empty/null','Columns with nulls','Rows where ALL columns are null'],ans:1,exp:'dropna(subset=["email"]) removes rows where the "email" column specifically has a null value.'}
+      ]
+    }
+  ]
+},
+{
+  id:'stats', icon:'📊', title:'Statistics for Analysts',
+  color:'#ffd166', tagClass:'tag-stats',
+  desc:'Descriptive stats, probability, hypothesis testing, and A/B testing.',
+  lessons:[
+    {
+      id:'stats-descriptive',title:'Descriptive Statistics',
+      tag:'Statistics Fundamentals',tagColor:'#ffd166',
+      desc:'Mean, median, mode, variance, standard deviation — making sense of your data.',
+      sections:[
+        {type:'concept',content:`<strong>Descriptive statistics</strong> summarize a dataset into a few key numbers. They tell you the center, spread, and shape of your data before you run any complex analysis.<br><br>Understanding when to use mean vs median vs mode is a fundamental interview question.`},
+        {type:'formula-grid',items:[
+          {name:'Mean',code:'Σx / n',desc:'Sum of all values ÷ count. Sensitive to outliers.'},
+          {name:'Median',code:'Middle value',desc:'50th percentile. Robust to outliers.'},
+          {name:'Std Deviation',code:'√Variance',desc:'Average distance from mean.'},
+          {name:'Variance',code:'Σ(x-μ)² / n',desc:'Spread of data around mean.'},
+          {name:'Percentile',code:'P(X ≤ x)',desc:'% of values below a given value.'},
+          {name:'IQR',code:'Q3 − Q1',desc:'Middle 50% spread. Outlier detector.'}
+        ]},
+        {type:'code',lang:'Python',label:'Descriptive statistics in Python',code:`<span class="kw">import</span> pandas <span class="kw">as</span> pd
+<span class="kw">import</span> numpy <span class="kw">as</span> np
+
+salaries = [45000, 52000, 48000, 55000, 200000, 49000, 51000]
+
+<span class="fn">print</span>(<span class="str">"Mean:"</span>, np.<span class="fn">mean</span>(salaries))      <span class="cmt"># 71,428 — pulled up by 200k</span>
+<span class="fn">print</span>(<span class="str">"Median:"</span>, np.<span class="fn">median</span>(salaries))  <span class="cmt"># 51,000 — more representative</span>
+<span class="fn">print</span>(<span class="str">"Std Dev:"</span>, np.<span class="fn">std</span>(salaries))   <span class="cmt"># 55,000 — high spread</span>
+
+<span class="cmt"># In Pandas</span>
+df[<span class="str">'salary'</span>].<span class="fn">describe</span>()
+<span class="cmt"># count, mean, std, min, 25%, 50%, 75%, max</span>
+
+<span class="cmt"># Skewness and kurtosis</span>
+df[<span class="str">'salary'</span>].<span class="fn">skew</span>()     <span class="cmt"># positive = right tail (our case)</span>
+df[<span class="str">'salary'</span>].<span class="fn">kurtosis</span>() <span class="cmt"># how heavy the tails are</span>`},
+        {type:'tip',title:'Mean vs Median — when to use each',content:`<strong>Use Mean</strong> when data is symmetric (no outliers). Example: exam scores.<br><strong>Use Median</strong> when data is skewed or has outliers. Example: house prices, salaries.<br><br>India's average salary looks high because of a few ultra-high earners — median is always more honest for income data.`},
+        {type:'quiz',q:'Salaries: 30k, 32k, 35k, 31k, 500k. Which better represents the "typical" salary?',opts:['Mean (125,600)','Median (32,000)','Mode','Standard Deviation'],ans:1,exp:'Median is resistant to outliers. The 500k outlier inflates the mean massively, making median (32,000) the better measure of "typical."'}
+      ]
+    },
+    {
+      id:'stats-hypothesis',title:'Hypothesis Testing & A/B Testing',
+      tag:'Statistics — Testing',tagColor:'#ffd166',
+      desc:'p-values, t-tests, chi-square — the science behind decisions.',
+      sections:[
+        {type:'concept',content:`<strong>Hypothesis testing</strong> answers: "Is this result real, or just random chance?" Every A/B test and business experiment uses this framework.<br><br>
+• <strong>Null Hypothesis (H₀)</strong> — no effect, no difference (default assumption)<br>
+• <strong>Alternative Hypothesis (H₁)</strong> — there IS an effect<br>
+• <strong>p-value</strong> — probability of seeing this result if H₀ is true<br>
+• <strong>Significance level (α)</strong> — threshold (usually 0.05). If p &lt; α, reject H₀.`},
+        {type:'steps',items:[
+          {title:'State your hypothesis',desc:'H₀: New button color has no effect on CTR. H₁: New button color increases CTR.'},
+          {title:'Collect data & choose test',desc:'Run the experiment for enough time. Use t-test (continuous), chi-square (categorical), or Mann-Whitney (non-normal).'},
+          {title:'Calculate test statistic',desc:'Python\'s scipy.stats gives you t-stat or chi-square and the p-value automatically.'},
+          {title:'Compare p-value to α',desc:'If p < 0.05 → statistically significant. Reject H₀. If p ≥ 0.05 → fail to reject H₀.'},
+          {title:'Check practical significance',desc:'A result can be statistically significant but too small to matter. Always check effect size too.'}
+        ]},
+        {type:'code',lang:'Python',label:'A/B Test — t-test in Python',code:`<span class="kw">from</span> scipy <span class="kw">import</span> stats
+<span class="kw">import</span> numpy <span class="kw">as</span> np
+
+<span class="cmt"># Control: original button | Treatment: new red button</span>
+control_ctr   = [0.032, 0.028, 0.031, 0.035, 0.027, 0.033]
+treatment_ctr = [0.041, 0.038, 0.044, 0.040, 0.043, 0.039]
+
+t_stat, p_value = stats.<span class="fn">ttest_ind</span>(treatment_ctr, control_ctr)
+
+<span class="fn">print</span>(<span class="str">f"t-statistic: {t_stat:.3f}"</span>)  <span class="cmt"># 5.84</span>
+<span class="fn">print</span>(<span class="str">f"p-value: {p_value:.4f}"</span>)     <span class="cmt"># 0.0004</span>
+<span class="fn">print</span>(<span class="str">f"Significant (α=0.05): {p_value < 0.05}"</span>)  <span class="cmt"># True</span>
+
+<span class="cmt"># Chi-square test for categorical data</span>
+observed = [[450, 550],  <span class="cmt"># control: 450 clicks, 550 no-clicks</span>
+            [520, 480]]  <span class="cmt"># treatment: 520 clicks, 480 no-clicks</span>
+
+chi2, p, dof, expected = stats.<span class="fn">chi2_contingency</span>(observed)
+<span class="fn">print</span>(<span class="str">f"Chi2 p-value: {p:.4f}"</span>)`},
+        {type:'tip',title:'Type I vs Type II Errors',content:`<strong>Type I Error (False Positive)</strong> — You say there's an effect, but there isn't. Probability = α (your significance level).<br><strong>Type II Error (False Negative)</strong> — There IS an effect, but you miss it. Probability = β.<br><br>In business: Type I = launching a change that doesn't work. Type II = missing a winning change. Both cost money.`},
+        {type:'quiz',q:'Your A/B test gives p-value = 0.03 (α = 0.05). What do you conclude?',opts:['Fail to reject H₀ — no significant difference','Reject H₀ — statistically significant result','The test is inconclusive','You need more data'],ans:1,exp:'p < α (0.03 < 0.05) means the result is statistically significant. Reject H₀ and conclude the treatment has an effect.'}
+      ]
+    }
+  ]
+},
+{
+  id:'eda', icon:'🔍', title:'EDA & Data Visualization',
+  color:'#ff6b6b', tagClass:'tag-eda',
+  desc:'Explore datasets, find patterns, and communicate insights visually.',
+  lessons:[
+    {
+      id:'eda-basics',title:'Exploratory Data Analysis (EDA)',
+      tag:'EDA',tagColor:'#ff6b6b',
+      desc:'Systematic approach to understanding any new dataset.',
+      sections:[
+        {type:'concept',content:`<strong>EDA</strong> is the process of visually and statistically exploring a dataset to understand its structure, spot anomalies, test assumptions, and generate hypotheses. It's the first thing you do with ANY new dataset — before modeling, before reporting.`},
+        {type:'steps',items:[
+          {title:'Understand the shape and structure',desc:'df.shape, df.dtypes, df.info() — how many rows, columns, what types?'},
+          {title:'Check for missing data',desc:'df.isnull().sum() — which columns have nulls? How many? Are they random or systematic?'},
+          {title:'Univariate analysis',desc:'Histograms, box plots for numeric. Bar charts, value_counts for categorical.'},
+          {title:'Bivariate analysis',desc:'Scatter plots, correlation matrix, crosstabs — how do columns relate to each other?'},
+          {title:'Detect anomalies',desc:'Outliers, impossible values (negative ages, future dates), duplicate rows.'},
+          {title:'Form hypotheses',desc:'What patterns do you see? What questions does the data raise?'}
+        ]},
+        {type:'code',lang:'Python',label:'Complete EDA starter template',code:`<span class="kw">import</span> pandas <span class="kw">as</span> pd
+<span class="kw">import</span> matplotlib.pyplot <span class="kw">as</span> plt
+<span class="kw">import</span> seaborn <span class="kw">as</span> sns
+
+df = pd.<span class="fn">read_csv</span>(<span class="str">'dataset.csv'</span>)
+
+<span class="cmt"># ── STRUCTURE ──────────────────────</span>
+<span class="fn">print</span>(df.<span class="fn">shape</span>, <span class="str">'\n'</span>, df.<span class="fn">dtypes</span>)
+<span class="fn">print</span>(df.<span class="fn">isnull</span>().<span class="fn">sum</span>())
+
+<span class="cmt"># ── DISTRIBUTIONS ──────────────────</span>
+df.<span class="fn">hist</span>(figsize=(<span class="num">14</span>, <span class="num">8</span>), bins=<span class="num">30</span>)
+
+<span class="cmt"># ── CORRELATION ────────────────────</span>
+plt.<span class="fn">figure</span>(figsize=(<span class="num">10</span>,<span class="num">7</span>))
+sns.<span class="fn">heatmap</span>(df.<span class="fn">corr</span>(), annot=<span class="kw">True</span>, fmt=<span class="str">'.2f'</span>,
+           cmap=<span class="str">'coolwarm'</span>, center=<span class="num">0</span>)
+plt.<span class="fn">title</span>(<span class="str">'Correlation Matrix'</span>)
+plt.<span class="fn">show</span>()
+
+<span class="cmt"># ── OUTLIERS ───────────────────────</span>
+plt.<span class="fn">figure</span>(figsize=(<span class="num">12</span>,<span class="num">5</span>))
+df.<span class="fn">select_dtypes</span>(<span class="str">'number'</span>).<span class="fn">boxplot</span>()
+plt.<span class="fn">xticks</span>(rotation=<span class="num">45</span>)
+plt.<span class="fn">show</span>()`},
+        {type:'tip',title:'Questions to ask during EDA',content:`• Which columns have high null rates? Is it random or correlated with something?<br>
+• Are there impossible values? (negative quantity, age=200, future order dates)<br>
+• What's the distribution shape? Skewed? Bimodal?<br>
+• Which pairs of columns are highly correlated? Could be interesting or problematic.<br>
+• Are there obvious segments? (different behavior for two groups?)`},
+        {type:'quiz',q:'During EDA, you notice age column has values 0 and 999. What should you do?',opts:['Leave them — they might be valid','Flag as likely data entry errors, investigate before removing','Automatically replace with mean','Delete all rows with extreme ages'],ans:1,exp:'Never blindly remove data. First understand WHY the values exist — are they default values from a form? Coding for unknown? Investigate, then decide.'}
+      ]
+    },
+    {
+      id:'viz-matplotlib',title:'Visualization — Matplotlib & Seaborn',
+      tag:'Visualization',tagColor:'#ff6b6b',
+      desc:'Create professional charts that communicate insights clearly.',
+      sections:[
+        {type:'concept',content:`<strong>Matplotlib</strong> is the foundation — full control, verbose syntax. <strong>Seaborn</strong> builds on Matplotlib with beautiful defaults and statistical plots. For DA work, Seaborn for analysis, Matplotlib for customization.<br><br>Chart selection matters: wrong chart type hides or misleads insights.`},
+        {type:'code',lang:'Python',label:'Essential charts for data analysis',code:`<span class="kw">import</span> matplotlib.pyplot <span class="kw">as</span> plt
+<span class="kw">import</span> seaborn <span class="kw">as</span> sns
+
+<span class="cmt"># Set style</span>
+sns.<span class="fn">set_theme</span>(style=<span class="str">'whitegrid'</span>, palette=<span class="str">'husl'</span>)
+
+<span class="cmt"># 1. Distribution — histogram + KDE</span>
+sns.<span class="fn">histplot</span>(df[<span class="str">'salary'</span>], kde=<span class="kw">True</span>, bins=<span class="num">30</span>)
+
+<span class="cmt"># 2. Relationship — scatter plot</span>
+sns.<span class="fn">scatterplot</span>(data=df, x=<span class="str">'experience'</span>, y=<span class="str">'salary'</span>, hue=<span class="str">'department'</span>)
+
+<span class="cmt"># 3. Category comparison — bar chart</span>
+sns.<span class="fn">barplot</span>(data=df, x=<span class="str">'region'</span>, y=<span class="str">'revenue'</span>, estimator=<span class="str">'sum'</span>)
+
+<span class="cmt"># 4. Distribution by category — box plot</span>
+sns.<span class="fn">boxplot</span>(data=df, x=<span class="str">'department'</span>, y=<span class="str">'salary'</span>)
+plt.<span class="fn">xticks</span>(rotation=<span class="num">45</span>)
+
+<span class="cmt"># 5. Pair relationships — pair plot</span>
+sns.<span class="fn">pairplot</span>(df[[<span class="str">'revenue'</span>,<span class="str">'quantity'</span>,<span class="str">'discount'</span>,<span class="str">'profit'</span>]])
+
+<span class="cmt"># 6. Time series — line chart</span>
+plt.<span class="fn">plot</span>(df[<span class="str">'month'</span>], df[<span class="str">'revenue'</span>], marker=<span class="str">'o'</span>)
+plt.<span class="fn">title</span>(<span class="str">'Monthly Revenue Trend'</span>)
+plt.<span class="fn">xlabel</span>(<span class="str">'Month'</span>); plt.<span class="fn">ylabel</span>(<span class="str">'Revenue (₹)'</span>)
+plt.<span class="fn">tight_layout</span>(); plt.<span class="fn">show</span>()`},
+        {type:'tip',title:'Chart selection guide',content:`📊 <strong>Bar chart</strong> — compare categories<br>
+📈 <strong>Line chart</strong> — trends over time<br>
+⚫ <strong>Scatter plot</strong> — relationship between two variables<br>
+📦 <strong>Box plot</strong> — distribution + outliers by category<br>
+🔥 <strong>Heatmap</strong> — correlation matrix, pivot tables<br>
+🔔 <strong>Histogram</strong> — distribution of a single variable<br><br>
+Never use pie charts for more than 3-4 categories.`},
+        {type:'quiz',q:'You want to show revenue trend over 12 months. Best chart?',opts:['Bar chart','Histogram','Line chart','Scatter plot'],ans:2,exp:'Line charts show trends over time best — the connecting line emphasizes the continuous progression. Bar charts work too but are less effective for showing direction.'}
+      ]
+    }
+  ]
+},
+{
+  id:'advanced', icon:'⚡', title:'Advanced Analytics & BI',
+  color:'#00d4aa', tagClass:'tag-adv',
+  desc:'Tableau, Power BI, dashboard design, and business metric frameworks.',
+  lessons:[
+    {
+      id:'bi-tableau',title:'Tableau — Building Dashboards',
+      tag:'BI Tools',tagColor:'#00d4aa',
+      desc:'Connect data, build visualizations, and create interactive dashboards in Tableau.',
+      sections:[
+        {type:'concept',content:`<strong>Tableau</strong> is the leading BI tool in the DA market. It connects to databases, CSVs, and cloud sources, and lets you build interactive dashboards without writing code.<br><br>Core concepts: <strong>Dimensions</strong> (categorical fields, shown in blue) vs <strong>Measures</strong> (numeric fields, shown in green). Drag-and-drop to Rows/Columns shelf to build charts.`},
+        {type:'steps',items:[
+          {title:'Connect your data source',desc:'File → CSV/Excel, or Database → PostgreSQL/MySQL. Use "Extract" for faster performance on large data.'},
+          {title:'Understand the data pane',desc:'Dimensions (categories) are blue. Measures (numbers) are green. You can convert between them.'},
+          {title:'Build your first chart',desc:'Drag a Dimension to Columns, a Measure to Rows. Tableau auto-suggests chart types. Use "Show Me" panel for options.'},
+          {title:'Add filters and parameters',desc:'Drag fields to the Filters shelf. Create Parameters for dynamic thresholds (e.g., "Top N" selector).'},
+          {title:'Create a Dashboard',desc:'New Dashboard sheet. Drag individual chart sheets onto the canvas. Add filter actions for interactivity.'},
+          {title:'Publish to Tableau Public',desc:'Server → Tableau Public → Save. Share the URL — this is your portfolio!'}
+        ]},
+        {type:'info',content:`<strong>Calculated Fields you must know:</strong><br>
+• <code>SUM(Sales) / SUM(Orders)</code> — average order value<br>
+• <code>DATEDIFF('month', [Order Date], TODAY())</code> — months since order<br>
+• <code>IF [Profit] > 0 THEN "Profitable" ELSE "Loss" END</code> — conditional<br>
+• <code>{ FIXED [Region] : SUM([Sales]) }</code> — LOD expression (advanced)`},
+        {type:'quiz',q:'In Tableau, what is a Dimension vs a Measure?',opts:['Dimensions are rows, Measures are columns','Dimensions are categorical (blue), Measures are numerical (green)','Dimensions are calculations, Measures are raw data','Dimensions are filters, Measures are aggregations'],ans:1,exp:'Dimensions are categorical fields used to slice/segment data (Region, Product). Measures are numeric values to aggregate (Revenue, Count). Blue = Dimension, Green = Measure.'}
+      ]
+    },
+    {
+      id:'metrics',title:'Business Metrics & KPI Design',
+      tag:'Business Analytics',tagColor:'#00d4aa',
+      desc:'Define, measure, and communicate the metrics that drive business decisions.',
+      sections:[
+        {type:'concept',content:`A <strong>KPI (Key Performance Indicator)</strong> is a measurable value that shows whether a business is achieving its objectives. As a DA, you'll be asked to define metrics, detect drops, and explain anomalies.<br><br>The best metrics are: <strong>specific</strong>, <strong>measurable</strong>, <strong>actionable</strong>, and <strong>leading indicators</strong> (not just lagging).`},
+        {type:'formula-grid',items:[
+          {name:'DAU/MAU Ratio',code:'DAU / MAU × 100',desc:'Stickiness. >20% is healthy for consumer apps.'},
+          {name:'Churn Rate',code:'Lost users / Start users',desc:'Monthly % of users who stop using the product.'},
+          {name:'Retention D7',code:'Users active day 7 / installs',desc:'7-day retention — key for mobile apps.'},
+          {name:'CAC',code:'Marketing spend / New customers',desc:'Customer Acquisition Cost.'},
+          {name:'LTV',code:'ARPU / Churn Rate',desc:'Customer Lifetime Value — how much a user is worth.'},
+          {name:'NPS',code:'% Promoters − % Detractors',desc:'Net Promoter Score. >50 is excellent.'}
+        ]},
+        {type:'info',content:`<strong>Metric Drop Investigation Framework (used in interviews):</strong><br>
+1. <strong>Confirm</strong> the drop — is the data pipeline healthy? Check at multiple granularities.<br>
+2. <strong>Segment</strong> — is it all users or a specific group? (Platform, region, cohort, plan type?)<br>
+3. <strong>Funnel</strong> — which step in the funnel dropped? (Acquisition? Activation? Retention?)<br>
+4. <strong>Correlate</strong> — did anything change? (Deploy, marketing campaign, competitor launch, external event?)<br>
+5. <strong>Recommend</strong> — based on root cause, what's the fix?`},
+        {type:'quiz',q:'DAU dropped 15% on Monday. First thing you check?',opts:['Immediately tell the CEO','Check if the data pipeline failed before investigating the business','Launch a fix','Compare to same day last week'],ans:1,exp:'Always check data pipeline health first! A 15% drop could simply be missing data from an ETL job, not a real business decline. Validate the data before drawing conclusions.'}
+      ]
+    }
+  ]
+},
+{
+  id:'ml', icon:'🤖', title:'ML Concepts for Analysts',
+  color:'#7c6bff', tagClass:'tag-ml',
+  desc:'Linear regression, classification, and clustering — analyst-level understanding.',
+  lessons:[
+    {
+      id:'ml-regression',title:'Linear Regression',
+      tag:'Machine Learning',tagColor:'#7c6bff',
+      desc:'Predict continuous outcomes and interpret model coefficients.',
+      sections:[
+        {type:'concept',content:`<strong>Linear regression</strong> models the relationship between a target variable (Y) and one or more input features (X). As a DA, you use it to understand relationships and make predictions.<br><br>Formula: <code>Y = β₀ + β₁X₁ + β₂X₂ + ... + ε</code><br><br>
+• <strong>β (coefficients)</strong> — how much Y changes for 1 unit change in X<br>
+• <strong>R² (R-squared)</strong> — how much variance in Y is explained by X (0 to 1, higher=better)<br>
+• <strong>p-value for each feature</strong> — is this feature statistically significant?`},
+        {type:'code',lang:'Python',label:'Linear regression with scikit-learn',code:`<span class="kw">import</span> pandas <span class="kw">as</span> pd
+<span class="kw">import</span> numpy <span class="kw">as</span> np
+<span class="kw">from</span> sklearn.<span class="fn">linear_model</span> <span class="kw">import</span> LinearRegression
+<span class="kw">from</span> sklearn.<span class="fn">model_selection</span> <span class="kw">import</span> train_test_split
+<span class="kw">from</span> sklearn.<span class="fn">metrics</span> <span class="kw">import</span> r2_score, mean_absolute_error
+
+<span class="cmt"># Predicting house price from features</span>
+features = [<span class="str">'area_sqft'</span>, <span class="str">'bedrooms'</span>, <span class="str">'distance_km'</span>, <span class="str">'age_years'</span>]
+X = df[features]
+y = df[<span class="str">'price'</span>]
+
+X_train, X_test, y_train, y_test = <span class="fn">train_test_split</span>(
+  X, y, test_size=<span class="num">0.2</span>, random_state=<span class="num">42</span>
+)
+
+model = <span class="fn">LinearRegression</span>()
+model.<span class="fn">fit</span>(X_train, y_train)
+
+<span class="cmt"># Evaluate</span>
+y_pred = model.<span class="fn">predict</span>(X_test)
+<span class="fn">print</span>(<span class="str">f"R²: {r2_score(y_test, y_pred):.3f}"</span>)       <span class="cmt"># 0.87</span>
+<span class="fn">print</span>(<span class="str">f"MAE: ₹{mean_absolute_error(y_test, y_pred):,.0f}"</span>)
+
+<span class="cmt"># Coefficients — what drives price?</span>
+coefs = pd.<span class="fn">DataFrame</span>({
+  <span class="str">'feature'</span>: features,
+  <span class="str">'coefficient'</span>: model.coef_
+}).<span class="fn">sort_values</span>(<span class="str">'coefficient'</span>, ascending=<span class="kw">False</span>)
+<span class="fn">print</span>(coefs)`},
+        {type:'table',cols:['feature','coefficient','interpretation'],rows:[['area_sqft','4,250','Each extra sqft adds ₹4,250'],['bedrooms','85,000','Each bedroom adds ₹85,000'],['age_years','-12,000','Each year older reduces ₹12,000'],['distance_km','-8,500','Each km further reduces ₹8,500']]},
+        {type:'quiz',q:'R² = 0.87 means what?',opts:['87% of predictions are correct','87% of variance in Y is explained by the model','The model is 87% accurate','87% of data fits the line perfectly'],ans:1,exp:'R² measures explained variance, not accuracy. R²=0.87 means the features explain 87% of the variation in the target variable.'}
+      ]
+    },
+    {
+      id:'ml-clustering',title:'Clustering — Customer Segmentation',
+      tag:'Machine Learning',tagColor:'#7c6bff',
+      desc:'K-Means clustering for grouping similar customers automatically.',
+      sections:[
+        {type:'concept',content:`<strong>Clustering</strong> groups similar data points together without predefined labels (unsupervised learning). <strong>K-Means</strong> is the most common algorithm — you tell it how many groups (K) to form, and it finds the natural groupings.<br><br>In DA, clustering is most commonly used for <strong>customer segmentation</strong> — grouping customers by behavior, spend, demographics.`},
+        {type:'code',lang:'Python',label:'K-Means customer segmentation',code:`<span class="kw">import</span> pandas <span class="kw">as</span> pd
+<span class="kw">from</span> sklearn.<span class="fn">cluster</span> <span class="kw">import</span> KMeans
+<span class="kw">from</span> sklearn.<span class="fn">preprocessing</span> <span class="kw">import</span> StandardScaler
+<span class="kw">import</span> matplotlib.pyplot <span class="kw">as</span> plt
+
+<span class="cmt"># Features for customer segmentation</span>
+X = df[[<span class="str">'total_spend'</span>, <span class="str">'order_frequency'</span>, <span class="str">'avg_order_value'</span>]]
+
+<span class="cmt"># Scale features (K-Means is distance-based)</span>
+scaler = <span class="fn">StandardScaler</span>()
+X_scaled = scaler.<span class="fn">fit_transform</span>(X)
+
+<span class="cmt"># Find optimal K using Elbow Method</span>
+inertias = []
+<span class="kw">for</span> k <span class="kw">in</span> <span class="fn">range</span>(<span class="num">1</span>, <span class="num">11</span>):
+  km = <span class="fn">KMeans</span>(n_clusters=k, random_state=<span class="num">42</span>)
+  km.<span class="fn">fit</span>(X_scaled)
+  inertias.<span class="fn">append</span>(km.inertia_)
+
+plt.<span class="fn">plot</span>(<span class="fn">range</span>(<span class="num">1</span>,<span class="num">11</span>), inertias, marker=<span class="str">'o'</span>)
+plt.<span class="fn">title</span>(<span class="str">'Elbow Method — choose K at the "elbow"'</span>)
+
+<span class="cmt"># Apply with chosen K=4</span>
+kmeans = <span class="fn">KMeans</span>(n_clusters=<span class="num">4</span>, random_state=<span class="num">42</span>)
+df[<span class="str">'segment'</span>] = kmeans.<span class="fn">fit_predict</span>(X_scaled)
+
+<span class="cmt"># Profile each segment</span>
+<span class="fn">print</span>(df.<span class="fn">groupby</span>(<span class="str">'segment'</span>)[
+  [<span class="str">'total_spend'</span>,<span class="str">'order_frequency'</span>,<span class="str">'avg_order_value'</span>]
+].<span class="fn">mean</span>())</code>`},
+        {type:'table',cols:['Segment','Total Spend','Frequency','Avg Order','Profile'],rows:[['0','₹2,50,000','18.4','₹13,500','Champions — high value, frequent'],['1','₹85,000','4.2','₹20,200','Big ticket, rare buyers'],['2','₹12,000','9.8','₹1,225','Bargain hunters — small, frequent'],['3','₹3,200','1.1','₹2,900','At-risk — lapsed customers']]},
+        {type:'quiz',q:'Why must you scale features before K-Means?',opts:['To improve accuracy','K-Means uses distance — large-scale features dominate without scaling','To speed up training','Scaling is optional'],ans:1,exp:'K-Means computes Euclidean distance. A feature like "annual income" (range 0-1M) would dominate "number of purchases" (range 0-50) without scaling, making the clusters meaningless.'}
+      ]
+    }
+  ]
+},
+{
+  id:'interview', icon:'🎯', title:'Interview Prep & Projects',
+  color:'#ff6b6b', tagClass:'tag-int',
+  desc:'Case studies, SQL challenges, behavioral questions, and portfolio projects.',
+  lessons:[
+    {
+      id:'int-sql-patterns',title:'Top SQL Interview Patterns',
+      tag:'Interview',tagColor:'#ff6b6b',
+      desc:'The exact SQL patterns that appear in 90% of DA technical interviews.',
+      sections:[
+        {type:'concept',content:`These patterns appear in interviews at Amazon, Google, Flipkart, Swiggy, Zomato, and every major tech company. Practice each one until you can write them from memory in under 5 minutes.`},
+        {type:'code',lang:'SQL',label:'Pattern 1: Top-N per group',code:`<span class="cmt">-- "Find top 3 products by revenue in each category"</span>
+<span class="kw">WITH</span> ranked <span class="kw">AS</span> (
+  <span class="kw">SELECT</span>
+    category, product_name, revenue,
+    <span class="fn">ROW_NUMBER</span>() <span class="kw">OVER</span>(<span class="kw">PARTITION BY</span> category <span class="kw">ORDER BY</span> revenue <span class="kw">DESC</span>) <span class="kw">AS</span> rn
+  <span class="kw">FROM</span> <span class="tbl">products</span>
+)
+<span class="kw">SELECT</span> category, product_name, revenue
+<span class="kw">FROM</span> ranked <span class="kw">WHERE</span> rn <= <span class="num">3</span>;
+
+<span class="cmt">-- Pattern 2: Consecutive events (users active 3 days in a row)</span>
+<span class="kw">WITH</span> numbered <span class="kw">AS</span> (
+  <span class="kw">SELECT</span> user_id, activity_date,
+    activity_date - <span class="fn">ROW_NUMBER</span>() <span class="kw">OVER</span>(<span class="kw">PARTITION BY</span> user_id <span class="kw">ORDER BY</span> activity_date) <span class="kw">AS</span> grp
+  <span class="kw">FROM</span> <span class="tbl">user_activity</span>
+)
+<span class="kw">SELECT</span> user_id, <span class="fn">MIN</span>(activity_date), <span class="fn">MAX</span>(activity_date), <span class="fn">COUNT</span>(*) streak
+<span class="kw">FROM</span> numbered
+<span class="kw">GROUP BY</span> user_id, grp
+<span class="kw">HAVING</span> <span class="fn">COUNT</span>(*) >= <span class="num">3</span>;
+
+<span class="cmt">-- Pattern 3: Month-over-month growth rate</span>
+<span class="kw">SELECT</span>
+  month,
+  revenue,
+  <span class="fn">ROUND</span>(<span class="num">100.0</span> * (revenue - <span class="fn">LAG</span>(revenue) <span class="kw">OVER</span>(<span class="kw">ORDER BY</span> month))
+    / <span class="fn">LAG</span>(revenue) <span class="kw">OVER</span>(<span class="kw">ORDER BY</span> month), <span class="num">1</span>) <span class="kw">AS</span> mom_growth_pct
+<span class="kw">FROM</span> <span class="tbl">monthly_revenue</span>;`},
+        {type:'tip',title:'Platforms to practice these patterns',content:`• <strong>StrataScratch</strong> — real interview questions by company name (Google, Meta, Airbnb)<br>
+• <strong>DataLemur</strong> — built for DA/DS interview prep, great explanations<br>
+• <strong>LeetCode Database</strong> — 200+ SQL problems, Easy to Hard<br>
+• <strong>HackerRank SQL</strong> — good for timed practice<br><br>
+Aim: solve 5 problems per day for 2 weeks before an interview.`},
+        {type:'quiz',q:'Interview asks: "Find customers who bought every month in 2024." Which approach?',opts:['WHERE purchase_date = every month','GROUP BY customer, month HAVING COUNT(DISTINCT month) = 12','WHERE month IN (1,2,...,12)','FULL OUTER JOIN all 12 months'],ans:1,exp:'GROUP BY customer_id and month, then HAVING COUNT(DISTINCT MONTH(date)) = 12 ensures they had at least one purchase in all 12 months.'}
+      ]
+    },
+    {
+      id:'int-behavioral',title:'Behavioral Interview — STAR Method',
+      tag:'Interview',tagColor:'#ff6b6b',
+      desc:'Structure your answers for behavioral questions with compelling stories.',
+      sections:[
+        {type:'concept',content:`The <strong>STAR method</strong> gives your behavioral answers structure:<br><br>
+• <strong>S</strong>ituation — set the context (brief, 1-2 sentences)<br>
+• <strong>T</strong>ask — what was your responsibility?<br>
+• <strong>A</strong>ction — what did YOU specifically do? (most important part)<br>
+• <strong>R</strong>esult — quantify the outcome if possible<br><br>
+Always end with numbers: "reduced churn by 12%", "saved 8 hours/week", "increased revenue by ₹2L".`},
+        {type:'steps',items:[
+          {title:'"Tell me about a time your analysis changed a decision"',desc:'STAR: Project where you found an insight that surprised stakeholders, and they changed strategy based on it.'},
+          {title:'"How do you handle ambiguous requirements?"',desc:'Show that you proactively clarify: ask about the decision being made, the stakeholder, and the timeline.'},
+          {title:'"Describe a mistake you made with data"',desc:'Show self-awareness, what you learned, and the process you put in place to prevent recurrence.'},
+          {title:'"How do you communicate findings to non-technical people?"',desc:'Avoid jargon, lead with the insight (not the method), use visuals, and tell a story.'},
+          {title:'"What is your most complex SQL query?"',desc:'Walk through a window function or CTE query from a project — have one ready to explain clearly.'}
+        ]},
+        {type:'info',content:`<strong>Questions YOU should ask the interviewer:</strong><br>
+• "What does a typical analyst's first 30-60-90 days look like?"<br>
+• "What's the biggest analytical challenge the team is working on right now?"<br>
+• "How mature is the data infrastructure? What's the primary BI tool?"<br>
+• "How do you measure success for the data analytics team?"<br><br>
+Thoughtful questions show genuine interest and business curiosity.`},
+        {type:'quiz',q:'In STAR, which part should you spend the MOST time on?',opts:['Situation — context is everything','Task — your role matters most','Action — what YOU did is the interview focus','Result — numbers impress interviewers'],ans:2,exp:'The Action is the most important part — interviewers want to understand YOUR specific contribution and thinking process. Situation should be brief (10%). Action should be 60-70% of your answer.'}
+      ]
+    }
+  ]
+}
+];
+
+// ════════════════════════════════════════════════════════
+// STATE & HELPERS
+// ════════════════════════════════════════════════════════
+let completed = {};
+let currentLesson = null;
+
+function totalLessons(){return curriculum.reduce((s,m)=>s+m.lessons.length,0)}
+function completedCount(){return Object.keys(completed).filter(k=>completed[k]).length}
+function updateProgress(){
+  const pct=Math.round(completedCount()/totalLessons()*100);
+  document.getElementById('prog-bar').style.width=pct+'%';
+  document.getElementById('prog-pct').textContent=pct+'%';
+}
+
+// ════════════════════════════════════════════════════════
+// NAV TREE
+// ════════════════════════════════════════════════════════
+function buildNav(){
+  const tree=document.getElementById('nav-tree');
+  tree.innerHTML='';
+  curriculum.forEach((mod,mi)=>{
+    const div=document.createElement('div');
+    div.className='nav-module';
+    const btn=document.createElement('button');
+    btn.className='nav-module-btn';
+    btn.innerHTML=`<span class="mod-icon" style="background:${mod.color}22">${mod.icon}</span>${mod.title}<span class="chevron">▶</span>`;
+    btn.onclick=()=>{btn.classList.toggle('open')};
+    const lessonsDiv=document.createElement('div');
+    lessonsDiv.className='nav-lessons';
+    mod.lessons.forEach((les,li)=>{
+      const lb=document.createElement('button');
+      lb.className='nav-lesson-btn'+(completed[les.id]?' done':'');
+      lb.id='navbtn-'+les.id;
+      lb.innerHTML=`<span class="check">${completed[les.id]?'✓':''}</span>${les.title}`;
+      lb.onclick=()=>showLesson(mi,li);
+      lessonsDiv.appendChild(lb);
+    });
+    div.appendChild(btn);
+    div.appendChild(lessonsDiv);
+    tree.appendChild(div);
+  });
+}
+
+// ════════════════════════════════════════════════════════
+// HOME PAGE
+// ════════════════════════════════════════════════════════
+function showHome(){
+  currentLesson=null;
+  document.getElementById('breadcrumb').innerHTML='<span>DataCraft Academy</span>';
+  document.getElementById('lesson-counter').textContent=`${curriculum.length} Modules • ${totalLessons()} Lessons`;
+  const area=document.getElementById('content-area');
+  area.innerHTML=`
+<div class="hero">
+  <div class="hero-badge">🎓 End-to-End Data Analysis Course</div>
+  <h1>Master <span class="grad">Data Analysis</span><br>From Zero to Hired</h1>
+  <p>A complete, structured curriculum covering SQL, Python, Statistics, EDA, Visualization, BI Tools, and Machine Learning — built for interview success.</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="hero-stat-num">${curriculum.length}</div><div class="hero-stat-label">Modules</div></div>
+    <div class="hero-stat"><div class="hero-stat-num">${totalLessons()}</div><div class="hero-stat-label">Lessons</div></div>
+    <div class="hero-stat"><div class="hero-stat-num">42+</div><div class="hero-stat-label">Code Examples</div></div>
+    <div class="hero-stat"><div class="hero-stat-num">16</div><div class="hero-stat-label">Weeks Roadmap</div></div>
+  </div>
+</div>
+<div class="module-grid">
+${curriculum.map((mod,mi)=>{
+  const done=mod.lessons.filter(l=>completed[l.id]).length;
+  return `<div class="module-card" onclick="showLesson(${mi},0)" style="cursor:pointer">
+    <div class="mc-icon" style="background:${mod.color}22;font-size:22px">${mod.icon}</div>
+    <div class="mc-title">${mod.title}</div>
+    <div class="mc-desc">${mod.desc}</div>
+    <div class="mc-meta">
+      <span>${mod.lessons.length} lessons</span>
+      <span style="color:${mod.color}">${done}/${mod.lessons.length} done</span>
+    </div>
+  </div>`;
+}).join('')}
+</div>`;
+}
+
+// ════════════════════════════════════════════════════════
+// LESSON RENDERER
+// ════════════════════════════════════════════════════════
+function renderSection(sec,lesId,si){
+  if(sec.type==='concept'){
+    return `<div class="concept-box"><p>${sec.content}</p></div>`;
+  }
+  if(sec.type==='code'){
+    return `<div class="code-wrap">
+      <div class="code-header">
+        <div class="code-dots"><div class="dot" style="background:#ff5f57"></div><div class="dot" style="background:#ffbd2e"></div><div class="dot" style="background:#28c840"></div></div>
+        <span>${sec.label}</span>
+        <span>${sec.lang}</span>
+      </div>
+      <div class="code-block">${sec.code}</div>
+    </div>`;
+  }
+  if(sec.type==='table'){
+    return `<div class="output-wrap">
+      <div class="section-label" style="margin-top:0">Sample Output</div>
+      <div style="overflow-x:auto"><table class="output-table">
+        <thead><tr>${sec.cols.map(c=>`<th>${c}</th>`).join('')}</tr></thead>
+        <tbody>${sec.rows.map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join('')}</tr>`).join('')}</tbody>
+      </table></div>
+    </div>`;
+  }
+  if(sec.type==='tip'){
+    return `<div class="tip-box"><div>💡 <strong>${sec.title}:</strong><br><br>${sec.content}</div></div>`;
+  }
+  if(sec.type==='info'){
+    return `<div class="info-box"><strong>ℹ️ </strong> ${sec.content}</div>`;
+  }
+  if(sec.type==='steps'){
+    return `<div class="steps">${sec.items.map((s,i)=>`
+      <div class="step">
+        <div class="step-num">${i+1}</div>
+        <div class="step-content">
+          <div class="step-title">${s.title}</div>
+          <div class="step-desc">${s.desc}</div>
+        </div>
+      </div>`).join('')}</div>`;
+  }
+  if(sec.type==='formula-grid'){
+    return `<div class="formula-grid">${sec.items.map(f=>`
+      <div class="formula-card">
+        <div class="formula-name">${f.name}</div>
+        <div class="formula-code">${f.code}</div>
+        <div class="formula-desc">${f.desc}</div>
+      </div>`).join('')}</div>`;
+  }
+  if(sec.type==='quiz'){
+    const qid=`${lesId}_q${si}`;
+    return `<div class="quiz-box">
+      <div class="quiz-title">✅ Quick Check</div>
+      <div class="quiz-q">${sec.q}</div>
+      <div class="quiz-opts" id="qopts_${qid}">
+        ${sec.opts.map((o,oi)=>`<button class="quiz-opt" onclick="answerQ('${qid}',${oi},${sec.ans},'${(sec.exp||'').replace(/'/g,"&#39;")}')">
+          <span class="opt-letter">${String.fromCharCode(65+oi)}</span>${o}
+        </button>`).join('')}
+      </div>
+      <div class="quiz-feedback" id="qfb_${qid}"></div>
+    </div>`;
+  }
+  return '';
+}
+
+function answerQ(qid,pick,ans,exp){
+  const opts=document.querySelectorAll(`#qopts_${qid} .quiz-opt`);
+  opts.forEach(o=>o.disabled=true);
+  opts[ans].classList.add('correct');
+  if(pick!==ans) opts[pick].classList.add('wrong');
+  const fb=document.getElementById(`qfb_${qid}`);
+  fb.className=`quiz-feedback show ${pick===ans?'ok':'bad'}`;
+  fb.innerHTML=pick===ans?`✓ Correct! ${exp}`:`✗ Not quite. ${exp}`;
+}
+
+function showLesson(mi,li){
+  const mod=curriculum[mi];
+  const les=mod.lessons[li];
+  currentLesson={mi,li};
+
+  // Update nav
+  document.querySelectorAll('.nav-lesson-btn').forEach(b=>b.classList.remove('active'));
+  const nb=document.getElementById('navbtn-'+les.id);
+  if(nb){nb.classList.add('active');const modBtn=nb.closest('.nav-module').querySelector('.nav-module-btn');if(modBtn)modBtn.classList.add('open')}
+
+  // Breadcrumb
+  document.getElementById('breadcrumb').innerHTML=`<span style="cursor:pointer" onclick="showHome()">${mod.icon} ${mod.title}</span> <span style="color:var(--muted2)">›</span> <span>${les.title}</span>`;
+
+  // Build content
+  const area=document.getElementById('content-area');
+  area.innerHTML=`
+<div class="lesson-hero">
+  <span class="lesson-module-tag" style="color:${mod.color}">${mod.icon} ${mod.title}</span>
+  <div class="lesson-title">${les.title}</div>
+  <div class="lesson-desc">${les.desc}</div>
+  <div class="lesson-tags">
+    <span class="tag" style="background:${mod.color}22;color:${mod.color}">${les.tag}</span>
+  </div>
+</div>
+${les.sections.map((sec,si)=>{
+  const label=({concept:'Concept',code:'Code Example',table:'',tip:'',info:'',steps:'Steps',formula_grid:'Formulas',quiz:''})[sec.type]||'';
+  const div=label?`<div class="section-label">${label}</div>`:'';
+  return div+renderSection(sec,les.id,si);
+}).join('')}
+<div class="lesson-nav-btns">
+  <button class="nav-btn prev" onclick="navigateLesson(-1)" ${mi===0&&li===0?'disabled':''}>← Previous</button>
+  <button class="complete-btn ${completed[les.id]?'done':''}" id="complete-btn" onclick="markComplete('${les.id}')">
+    ${completed[les.id]?'✓ Completed':'Mark as Complete'}
+  </button>
+  <button class="nav-btn next" onclick="navigateLesson(1)" ${isLastLesson(mi,li)?'disabled':''}>Next →</button>
+</div>`;
+  area.scrollTop=0;
+  window.scrollTo(0,0);
+}
+
+function isLastLesson(mi,li){
+  return mi===curriculum.length-1 && li===curriculum[mi].lessons.length-1;
+}
+
+function navigateLesson(dir){
+  if(!currentLesson)return;
+  let {mi,li}=currentLesson;
+  li+=dir;
+  if(li<0){mi--;if(mi<0)return;li=curriculum[mi].lessons.length-1;}
+  else if(li>=curriculum[mi].lessons.length){mi++;if(mi>=curriculum.length)return;li=0;}
+  showLesson(mi,li);
+}
+
+function markComplete(id){
+  completed[id]=true;
+  const btn=document.getElementById('complete-btn');
+  if(btn){btn.textContent='✓ Completed';btn.classList.add('done')}
+  const nb=document.getElementById('navbtn-'+id);
+  if(nb){nb.classList.add('done');nb.querySelector('.check').textContent='✓'}
+  updateProgress();
+}
+
+// Init
+buildNav();
+showHome();
+updateProgress();
+</script>
+</body>
+</html>
